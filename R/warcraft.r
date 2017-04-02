@@ -94,11 +94,25 @@ warcraft <- function() {
     }
     mp3 <- sample(mp3s, 1)
     if (isTRUE(getOption("warcraft_mode"))) {
-        if (runif(1) < .05) system(paste("afplay", mp3, "&"))
+        if (runif(1) < .05) {
+            if (.Platform$OS.type == "windows") {
+                player <- "c:/Program Files/Windows Media Player/wmplayer.exe"
+                player <- shQuote(player)
+            } else {
+                player <- "afplay"
+            }
+            system(paste(player, mp3, "&"))
+        }
     } else {
         packageStartupMessage("Entering warcraft mode...")
         options(warcraft_mode = TRUE)
-        system(paste("afplay", mp3, "&"))
+        if (.Platform$OS.type == "windows") {
+            player <- "c:/Program Files/Windows Media Player/wmplayer.exe"
+            player <- shQuote(player)
+        } else {
+            player <- "afplay"
+        }
+        system(paste(player, mp3, "&"))
     }
     TRUE
 }
