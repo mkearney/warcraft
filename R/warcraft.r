@@ -24,8 +24,13 @@
 #' warcraft_mode(FALSE)
 #' }
 warcraft_mode <- function(n = 500) {
-    if (identical(n, FALSE)) options(warcraft_mode = FALSE)
-    invisible(addTaskCallback(wc3(n)))
+    if (identical(n, FALSE)) {
+        options(warcraft_mode = FALSE)
+    } else if (isTRUE(getOption("warcraft_mode"))) {
+        return(invisible())
+    } else {
+        invisible(addTaskCallback(wc3(n)))
+    }
 }
 
 
@@ -104,7 +109,7 @@ warcraft <- function() {
             system(paste(player, mp3, "&"))
         }
     } else {
-        packageStartupMessage("Entering warcraft mode...")
+        message("Entering warcraft mode...")
         options(warcraft_mode = TRUE)
         if (.Platform$OS.type == "windows") {
             player <- "c:/Program Files/Windows Media Player/wmplayer.exe"
