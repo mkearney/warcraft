@@ -57,7 +57,8 @@ setup_warcraft <- function(home) {
     mapply(download.file, wc_sounds$url,
            file.path(home, wc_sounds$path))
     key <- paste(file.path(home, wc_sounds$path), collapse = ":")
-    cat("WARCRAFT_PAT=", key, file = file.path(home, ".Renviron"),
+    cat(paste0("WARCRAFT_PAT=", key),
+        file = file.path(home, ".Renviron"),
         fill = TRUE, append = TRUE)
 }
 
