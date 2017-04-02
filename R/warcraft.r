@@ -96,7 +96,7 @@ wc3 <- function(total) {
 warcraft <- function() {
     mp3s <- WARCRAFT_PAT()
     if (identical(mp3s, FALSE)) {
-        mp3s <- grep("^.*.warcraft$",
+        mp3s <- grep("*.warcraft$",
                      list.files(all.files = TRUE, full.names = TRUE),
                      value = TRUE)
         if (length(mp3s == 0)) {
