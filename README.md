@@ -29,8 +29,8 @@ download.file("https://dl.dropboxusercontent.com/u/94363099/.jobsdone-warcraft.m
 
 ## create environment variable (string with audio paths)
 mp3s <- grep("^.*-warcraft.mp3$",
-     list.files(home, all.files = TRUE, full.names = TRUE),
-     value = TRUE)
+    list.files(home, all.files = TRUE, full.names = TRUE),
+    value = TRUE)
 mp3s <- paste(mp3s, collapse = ":")
 
 ## save to .Renviron
