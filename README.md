@@ -36,6 +36,6 @@ warcraft_mode(Inf)
 ## leave warcraft mode
 ``` r
 ## leave warcraft mode
-warcraft_mode(Inf)
+warcraft_mode(FALSE)
 ```
 
