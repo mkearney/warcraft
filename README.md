@@ -1,4 +1,4 @@
-## warcraft3
+## warcraft
 The only R package you need.
 
 ## description
@@ -10,7 +10,7 @@ Plays audio from warcraft 3 upon completion of every few R tasks.
 if (!"devtools" %in% installed.packages()) {
     install.packages("devtools")
 }
-devtools::install_github("mkearney/warcraft3")
+devtools::install_github("mkearney/warcraft")
 ```
 
 ## setup
@@ -43,7 +43,7 @@ cat(paste0("WARCRAFT_PATH=", mp3s),
 
 ``` r
 ## load package
-library(warcraft3)
+library(warcraft)
 ```
 
 ## endless use

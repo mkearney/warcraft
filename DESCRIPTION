@@ -1,16 +1,16 @@
-Package: warcraft3
+Package: warcraft
 Type: Package
-Title: War Rcraft
+Title: warcraft mode
 Version: 0.0.1
 Date: 2017-04-17
 Authors@R: person("Michael W.", "Kearney", "", "mkearney@ku.edu", c("aut", "cre"))
-Description: A simple package that cycles through audio files of
-    warcraft 3 sounds. Allows custom duration and will play for roughly 1 out of
-    ten top level tasks performed.
+Description: A simple package that cycles through audio files from the game
+    warcraft 3. Allows custom duration and will play for roughly one of twenty
+    top level tasks performed.
 Depends:
     R (>= 3.1.0)
 License: MIT + file LICENSE
 LazyData: TRUE
-URL: https://github.com/mkearney/warcraft3
-BugReports: https://github.com/mkearney/rtweet/issues
+URL: https://github.com/mkearney/warcraft
+BugReports: https://github.com/mkearney/warcraft/issues
 RoxygenNote: 6.0.1
