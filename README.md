@@ -2,7 +2,7 @@
 The only R package you need.
 
 ## description
-Plays audio from warcraft 3 on completion of R tasks.
+Plays audio from warcraft 3 upon completion of every few R tasks.
 
 ## install
 
