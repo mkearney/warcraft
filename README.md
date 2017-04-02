@@ -7,7 +7,7 @@ Plays audio from warcraft 3 on completion of R tasks.
 ## install
 
 ```{r}
-if (!"devtools" %in% install.packages()) {
+if (!"devtools" %in% installed.packages()) {
     install.packages("devtools")
 }
 devtools::install_github("mkearney/warcraft3")
