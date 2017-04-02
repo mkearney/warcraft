@@ -1,3 +1,6 @@
 .Rapp.history
 .Rhistory
+R/.*
 .build*
+#*
+.#*
