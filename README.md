@@ -35,7 +35,7 @@ mp3s <- paste(mp3s, collapse = ":")
 
 ## save to .Renviron
 cat(paste0("WARCRAFT_PATH=", mp3s),
-    file = file.path(home, ".Renviron"),
+	file = file.path(home, ".Renviron"),
 	fill = TRUE, append = TRUE)
 ```
 
