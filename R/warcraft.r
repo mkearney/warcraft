@@ -26,10 +26,12 @@
 warcraft_mode <- function(n = 500) {
     if (identical(n, FALSE)) {
         options(warcraft_mode = FALSE)
+        invisible(removeTaskCallback("warcraft"))
+        message("leaving warcraft mode...")
     } else if (isTRUE(getOption("warcraft_mode"))) {
         return(invisible())
     } else {
-        invisible(addTaskCallback(wc3(n)))
+        invisible(addTaskCallback(wc3(n), name = "warcraft"))
     }
 }
 
@@ -62,6 +64,11 @@ setup_warcraft <- function(home) {
     mapply(download.file, wc_sounds$url,
            file.path(home, wc_sounds$path))
     key <- paste(file.path(home, wc_sounds$path), collapse = ":")
+    if (file.exists(file.path(home, ".Renviron"))) {
+        x <- readLines(file.path(home, ".Renviron"))
+        x <- grep("^WARCRAFT_PAT", x, invert = TRUE, value = TRUE)
+        writeLines(x, file.path(home, ".Renviron"))
+    }
     cat(paste0("WARCRAFT_PAT=", key),
         file = file.path(home, ".Renviron"),
         fill = TRUE, append = TRUE)
