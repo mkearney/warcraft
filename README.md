@@ -34,7 +34,9 @@ mp3s <- grep("^.*-warcraft.mp3$",
 mp3s <- paste(mp3s, collapse = ":")
 
 ## save to .Renviron
-cat(paste0("WARCRAFT_PATH=", mp3s), fill = TRUE, append = TRUE)
+cat(paste0("WARCRAFT_PATH=", mp3s),
+    file = file.path(home, ".Renviron"),
+	fill = TRUE, append = TRUE)
 ```
 
 ## use
