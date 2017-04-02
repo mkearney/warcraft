@@ -6,7 +6,7 @@ Plays audio from warcraft 3 on completion of R tasks.
 
 ## install
 
-```{r}
+``` r
 if (!"devtools" %in% installed.packages()) {
     install.packages("devtools")
 }
@@ -15,7 +15,7 @@ devtools::install_github("mkearney/warcraft3")
 
 ## setup
 
-```{r}
+``` r
 ## get home directory
 home <- path.expand("~/")
 
@@ -37,3 +37,16 @@ mp3s <- paste(mp3s, collapse = ":")
 cat(paste0("WARCRAFT_PATH=", mp3s), fill = TRUE, append = TRUE)
 ```
 
+## use
+
+``` r
+## load package
+library(warcraft3)
+```
+
+## endless use
+
+``` r
+## play warcraft audio until q() session
+warcraft_mode(Inf)
+```
