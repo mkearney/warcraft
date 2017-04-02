@@ -38,7 +38,7 @@ WARCRAFT_PATH <- function() {
     strsplit(x, ":")[[1]]
 }
 
-#' jobsdone_wrappper
+#' warcraft3 wrapper
 #' @param n Number of max times to call warcraft audio before
 #'   warcraft mode expires. Defaults to 100. Plays roughly 1
 #'   out of 10 top level tasks.

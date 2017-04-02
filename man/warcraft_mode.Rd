@@ -2,7 +2,7 @@
 % Please edit documentation in R/warcraft.r
 \name{warcraft_mode}
 \alias{warcraft_mode}
-\title{jobsdone_wrappper}
+\title{warcraft3 wrapper}
 \usage{
 warcraft_mode(n = 100)
 }
@@ -12,5 +12,5 @@ warcraft mode expires. Defaults to 100. Plays roughly 1
 out of 10 top level tasks.}
 }
 \description{
-jobsdone_wrappper
+warcraft3 wrapper
 }
