@@ -4,8 +4,16 @@ The only R package you need.
 ## description
 Plays audio from warcraft 3 on completion of R tasks.
 
-## setup
+## install
 
+```{r}
+if (!"devtools" %in% install.packages()) {
+    install.packages("devtools")
+}
+devtools::install_github("mkearney/warcraft3")
+```
+
+## setup
 
 ```{r}
 ## get home directory
@@ -28,3 +36,4 @@ mp3s <- paste(mp3s, collapse = ":")
 ## save to .Renviron
 cat(paste0("WARCRAFT_PATH=", mp3s), fill = TRUE, append = TRUE)
 ```
+
