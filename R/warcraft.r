@@ -3,7 +3,8 @@
 #'
 #' @param n Number of max times to call warcraft audio before
 #'   warcraft mode expires. Defaults to 500. Plays roughly 1
-#'   out of 10 top level tasks.
+#'   out of 10 top level tasks. To disable warcraft mode, set
+#'   this value to FALSE.
 #' @export
 #' @examples
 #' \dontrun{
@@ -18,6 +19,9 @@
 #'
 #' ## set for entire session
 #' warcraft_mode(Inf)
+#'
+#' ## disable warcraft mode
+#' warcraft_mode(FALSE)
 #' }
 warcraft_mode <- function(n = 500) {
     if (identical(n, FALSE)) options(warcraft_mode = FALSE)
@@ -43,6 +47,9 @@ warcraft_mode <- function(n = 500) {
 #'
 #' ## set for entire session
 #' warcraft_mode(Inf)
+#'
+#' ## disable warcraft mode
+#' warcraft_mode(FALSE)
 #' }
 setup_warcraft <- function(home) {
     if (missing(home)) stop("must provide home directory", call. = FALSE)

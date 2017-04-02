@@ -9,7 +9,8 @@ warcraft_mode(n = 500)
 \arguments{
 \item{n}{Number of max times to call warcraft audio before
 warcraft mode expires. Defaults to 500. Plays roughly 1
-out of 10 top level tasks.}
+out of 10 top level tasks. To disable warcraft mode, set
+this value to FALSE.}
 }
 \description{
 warcraft_mode
@@ -27,5 +28,8 @@ library(warcraft)
 
 ## set for entire session
 warcraft_mode(Inf)
+
+## disable warcraft mode
+warcraft_mode(FALSE)
 }
 }

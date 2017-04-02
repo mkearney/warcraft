@@ -23,16 +23,19 @@ home <- path.expand("~/")
 warcraft::setup_warcraft(home)
 ```
 
-## use
+## enter warcraft mode
 
 ``` r
 ## load package
 library(warcraft)
-```
 
-## endless use
-
-``` r
-## play warcraft audio until q() session
+## set to warcraft mode indefinitely
 warcraft_mode(Inf)
 ```
+
+## leave warcraft mode
+``` r
+## leave warcraft mode
+warcraft_mode(Inf)
+```
+

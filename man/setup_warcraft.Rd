@@ -26,5 +26,8 @@ library(warcraft)
 
 ## set for entire session
 warcraft_mode(Inf)
+
+## disable warcraft mode
+warcraft_mode(FALSE)
 }
 }
