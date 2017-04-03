@@ -29,6 +29,8 @@ warcraft_mode <- function(n = 500) {
         invisible(removeTaskCallback("warcraft"))
         message("leaving warcraft mode...")
     } else if (isTRUE(getOption("warcraft_mode"))) {
+        invisible(removeTaskCallback("warcraft"))
+        invisible(addTaskCallback(wc3(n), name = "warcraft"))
         return(invisible())
     } else {
         invisible(addTaskCallback(wc3(n), name = "warcraft"))
@@ -106,7 +108,7 @@ warcraft <- function() {
     }
     mp3 <- sample(mp3s, 1)
     if (isTRUE(getOption("warcraft_mode"))) {
-        if (runif(1) < .05) {
+        if (runif(1) < .1) {
             if (.Platform$OS.type == "windows") {
                 player <- "c:/Program Files/Windows Media Player/wmplayer.exe"
                 player <- shQuote(player)
