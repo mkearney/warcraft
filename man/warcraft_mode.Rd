@@ -4,13 +4,16 @@
 \alias{warcraft_mode}
 \title{warcraft_mode}
 \usage{
-warcraft_mode(n = 500)
+warcraft_mode(n = 500, p = 0.1)
 }
 \arguments{
 \item{n}{Number of max times to call warcraft audio before
 warcraft mode expires. Defaults to 500. Plays roughly 1
 out of 10 top level tasks. To disable warcraft mode, set
 this value to FALSE.}
+
+\item{p}{Desired proportion of top-level tasks that should
+trigger the playing of audio files.}
 }
 \description{
 warcraft_mode

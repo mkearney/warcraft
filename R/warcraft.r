@@ -5,6 +5,8 @@
 #'   warcraft mode expires. Defaults to 500. Plays roughly 1
 #'   out of 10 top level tasks. To disable warcraft mode, set
 #'   this value to FALSE.
+#' @param p Desired proportion of top-level tasks that should
+#'   trigger the playing of audio files.
 #' @export
 #' @examples
 #' \dontrun{
@@ -23,17 +25,17 @@
 #' ## disable warcraft mode
 #' warcraft_mode(FALSE)
 #' }
-warcraft_mode <- function(n = 500) {
+warcraft_mode <- function(n = 500, p = .1) {
     if (identical(n, FALSE)) {
         options(warcraft_mode = FALSE)
         invisible(removeTaskCallback("warcraft"))
         message("leaving warcraft mode...")
     } else if (isTRUE(getOption("warcraft_mode"))) {
         invisible(removeTaskCallback("warcraft"))
-        invisible(addTaskCallback(wc3(n), name = "warcraft"))
+        invisible(addTaskCallback(wc3(n, p), name = "warcraft"))
         return(invisible())
     } else {
-        invisible(addTaskCallback(wc3(n), name = "warcraft"))
+        invisible(addTaskCallback(wc3(n, p), name = "warcraft"))
     }
 }
 
@@ -77,14 +79,14 @@ setup_warcraft <- function(home) {
 }
 
 
-wc3 <- function(total) {
+wc3 <- function(total, p) {
     ## create counter
     ..ctr.. <- 0
     function(expr, value, ok, visible) {
         ## add to counter
         ..ctr.. <<- ..ctr.. + 1
         ## warcraft mode
-        warcraft()
+        warcraft(p)
         active <- (..ctr.. < total)
         if (!active) {
             options(warcraft_mode = FALSE)
@@ -95,7 +97,7 @@ wc3 <- function(total) {
     }
 }
 
-warcraft <- function() {
+warcraft <- function(p) {
     mp3s <- WARCRAFT_PAT()
     if (identical(mp3s, FALSE)) {
         mp3s <- grep("*.warcraft$",
@@ -108,7 +110,7 @@ warcraft <- function() {
     }
     mp3 <- sample(mp3s, 1)
     if (isTRUE(getOption("warcraft_mode"))) {
-        if (runif(1) < .1) {
+        if (runif(1) < p) {
             if (.Platform$OS.type == "windows") {
                 player <- "c:/Program Files/Windows Media Player/wmplayer.exe"
                 player <- shQuote(player)
