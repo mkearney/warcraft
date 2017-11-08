@@ -90,42 +90,11 @@ wc3 <- function(total, p) {
   }
 }
 
-oldwarcraft_ <- function(p) {
-  wardir <- WARCRAFT_DIR()
-  mp3s <- list.files(
-    wardir, "\\.warcraft\\.mp3$", all.files = TRUE, full.names = TRUE)
-  if (length(mp3s) == 0) {
-    stop("sorry, you'll need to download the warcraft audio files",
-         call. = FALSE)
-  }
-  mp3 <- sample(mp3s, 1)
-  if (isTRUE(getOption("warcraft_mode"))) {
-    if (runif(1) < p) {
-      if (.Platform$OS.type == "windows") {
-        stop("Sorry. Doesn't work on Windows", call. = FALSE)
-      } else {
-        player <- "afplay"
-      }
-      system(paste(player, mp3, "&"))
-    }
-  } else {
-    message("Entering warcraft mode...")
-    options(warcraft_mode = TRUE)
-    if (.Platform$OS.type == "windows") {
-      stop("Sorry. Doesn't work on Windows", call. = FALSE)
-    } else {
-      player <- "afplay"
-    }
-    system(paste(player, mp3, "&"))
-  }
-  TRUE
-}
-
 
 warcraft_ <- function(p) {
   wardir <- WARCRAFT_DIR()
   mp3s <- list.files(
-    wardir, "\\.warcraft\\.mp3$", all.files = TRUE, full.names = TRUE)
+    wardir, "\\.warcraft", all.files = TRUE, full.names = TRUE)
   if (length(mp3s) == 0) {
     stop("sorry, you'll need to download the warcraft audio files",
          call. = FALSE)
@@ -140,13 +109,13 @@ warcraft_ <- function(p) {
         } else {
           player <- shQuote(player)
         }
-        shell(paste0('"', paste(player, shQuote(mp3)), '"'))
+        sh <- shell(paste0('"', paste(player, shQuote(mp3)), '"'), intern = TRUE)
       } else if (file.exists("/usr/bin/afplay")) {
         player <- "afplay"
-        system(paste(player, mp3, "&"))
+        sh <- system(paste(player, mp3, "&"), intern = TRUE)
       } else {
         player <- "play"
-        system(paste(player, mp3, "&"))
+        sh <- system(paste(player, mp3, "&"), intern = TRUE)
       }
     }
   } else {
@@ -159,13 +128,13 @@ warcraft_ <- function(p) {
       } else {
         player <- shQuote(player)
       }
-      shell(paste0('"', paste(player, shQuote(mp3)), '"'))
+      sh <- shell(paste0('"', paste(player, shQuote(mp3)), '"'), intern = TRUE)
     } else if (file.exists("/usr/bin/afplay")) {
       player <- "afplay"
-      system(paste(player, mp3, "&"))
+      sh <- system(paste(player, mp3, "&"), intern = TRUE)
     } else {
       player <- "play"
-      system(paste(player, mp3, "&"))
+      sh <- system(paste(player, mp3, "&"), intern = TRUE)
     }
   }
   TRUE

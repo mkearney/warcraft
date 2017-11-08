@@ -1,8 +1,18 @@
 ## load the first scriptorium emporium
 lib(warcraft)
 
+
 ## build package
 make_package(update = "patch", load_all = FALSE)
+
+
+
+kp <- grep("[[:digit:]]\\.", wc_sounds$path)
+wc_sounds$path[kp] <- gsub("\\.mp3$", ".wav", wc_sounds$path[kp])
+wc_sounds$path[3] <- gsub("\\.mp3$", ".wav", wc_sounds$path[3])
+wc_sounds
+setwd("R")
+save(wc_sounds, file = "sysdata.rda")
 
 ## check option
 getOption("warcraft_mode")
@@ -15,6 +25,6 @@ warcraft_mode(FALSE)
 
 ## update git repo
 add_to_git(
-  "rm write lines duplicate to renv and added .wav ext to audio files"
+  "okay now .mp3 and .wav"
 )
 1
