@@ -2,7 +2,7 @@
 lib(warcraft)
 
 ## build package
-make_package(update = "patch")
+make_package(update = "patch", load_all = FALSE)
 
 ## check option
 getOption("warcraft_mode")
@@ -15,6 +15,6 @@ warcraft_mode(FALSE)
 
 ## update git repo
 add_to_git(
-  "now selects players for windows and unix OS's"
+  "rm write lines duplicate to renv and added .wav ext to audio files"
 )
 1

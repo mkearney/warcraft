@@ -92,7 +92,8 @@ wc3 <- function(total, p) {
 
 oldwarcraft_ <- function(p) {
   wardir <- WARCRAFT_DIR()
-  mp3s <- list.files(wardir, "\\.warcraft$", all.files = TRUE, full.names = TRUE)
+  mp3s <- list.files(
+    wardir, "\\.warcraft.wav$", all.files = TRUE, full.names = TRUE)
   if (length(mp3s) == 0) {
     stop("sorry, you'll need to download the warcraft audio files",
          call. = FALSE)
@@ -123,7 +124,8 @@ oldwarcraft_ <- function(p) {
 
 warcraft_ <- function(p) {
   wardir <- WARCRAFT_DIR()
-  mp3s <- list.files(wardir, "\\.warcraft$", all.files = TRUE, full.names = TRUE)
+  mp3s <- list.files(
+    wardir, "\\.warcraft.wav$", all.files = TRUE, full.names = TRUE)
   if (length(mp3s) == 0) {
     stop("sorry, you'll need to download the warcraft audio files",
          call. = FALSE)
