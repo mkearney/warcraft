@@ -17,11 +17,4 @@ warcraft_mode(FALSE)
 add_to_git(
   "now selects players for windows and unix OS's"
 )
-
-
 1
-
-
-getOption("WavPlayer")
-
-    options("WavPlayer")$WavPlayer
