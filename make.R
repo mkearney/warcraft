@@ -1,8 +1,8 @@
 ## load the first scriptorium emporium
-library(tfse)
+lib(warcraft)
 
 ## build package
-make_package()
+make_package(update = "patch")
 
 ## check option
 getOption("warcraft_mode")
@@ -15,6 +15,13 @@ warcraft_mode(FALSE)
 
 ## update git repo
 add_to_git(
-  "setup now takes place on install/package load. same with R environment variable. in general, everything works a lot better."
+  "now selects players for windows and unix OS's"
 )
+
+
 1
+
+
+getOption("WavPlayer")
+
+    options("WavPlayer")$WavPlayer

@@ -90,7 +90,7 @@ wc3 <- function(total, p) {
   }
 }
 
-warcraft_ <- function(p) {
+oldwarcraft_ <- function(p) {
   wardir <- WARCRAFT_DIR()
   mp3s <- list.files(wardir, "\\.warcraft$", all.files = TRUE, full.names = TRUE)
   if (length(mp3s) == 0) {
@@ -116,6 +116,55 @@ warcraft_ <- function(p) {
       player <- "afplay"
     }
     system(paste(player, mp3, "&"))
+  }
+  TRUE
+}
+
+
+warcraft_ <- function(p) {
+  wardir <- WARCRAFT_DIR()
+  mp3s <- list.files(wardir, "\\.warcraft$", all.files = TRUE, full.names = TRUE)
+  if (length(mp3s) == 0) {
+    stop("sorry, you'll need to download the warcraft audio files",
+         call. = FALSE)
+  }
+  mp3 <- sample(mp3s, 1)
+  if (isTRUE(getOption("warcraft_mode"))) {
+    if (runif(1) < p) {
+      if (.Platform$OS.type == "windows") {
+        player <- "c:/Program Files/Windows Media Player/wmplayer.exe"
+        if (!file.exists(player)) {
+          player <- "mplay32 /play /close"
+        } else {
+          player <- shQuote(player)
+        }
+        shell(paste0('"', paste(player, shQuote(mp3)), '"'))
+      } else if (file.exists("/usr/bin/afplay")) {
+        player <- "afplay"
+        system(paste(player, mp3, "&"))
+      } else {
+        player <- "play"
+        system(paste(player, mp3, "&"))
+      }
+    }
+  } else {
+    message("Entering warcraft mode...")
+    options(warcraft_mode = TRUE)
+    if (.Platform$OS.type == "windows") {
+      player <- "c:/Program Files/Windows Media Player/wmplayer.exe"
+      if (!file.exists(player)) {
+        player <- "mplay32 /play /close"
+      } else {
+        player <- shQuote(player)
+      }
+      shell(paste0('"', paste(player, shQuote(mp3)), '"'))
+    } else if (file.exists("/usr/bin/afplay")) {
+      player <- "afplay"
+      system(paste(player, mp3, "&"))
+    } else {
+      player <- "play"
+      system(paste(player, mp3, "&"))
+    }
   }
   TRUE
 }

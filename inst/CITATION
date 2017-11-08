@@ -1,0 +1,18 @@
+
+citHeader("To cite warcraft use:")
+
+citEntry(
+    entry        = "Manual",
+    title        = "warcraft: warcraft mode",
+    author       = as.person("Michael W. Kearney"),
+    year         = 2017,
+    note         = "R package version 0.0.12",
+    url          = "https://github.com/mkearney/warcraft",
+    key          = "warcraft-package",
+    textVersion  = paste(
+        "Kearney, M. W. (2017). warcraft: warcraft mode.",
+        "R package version 0.0.12 Retrieved from",
+        "https://github.com/mkearney/warcraft"
+    )
+)
+

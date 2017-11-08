@@ -1,8 +1,8 @@
 Package: warcraft
 Type: Package
 Title: warcraft mode
-Version: 0.0.1
-Date: 2017-04-17
+Version: 0.0.12
+Date: 2017-11-08
 Authors@R: person("Michael W.", "Kearney", "", "mkearney@ku.edu", c("aut", "cre"))
 Description: A simple package that cycles through audio files from the game
     warcraft 3. Allows custom duration and will play for roughly one of twenty
