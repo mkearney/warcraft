@@ -9,6 +9,5 @@
 
 
 .onAttach <- function(libname, pkgname) {
-  setup_warcraft()
-  on.exit(warcraft_mode())
+  wavs <- setup_warcraft_dir()
 }

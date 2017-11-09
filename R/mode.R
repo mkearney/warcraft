@@ -28,13 +28,14 @@
 warcraft_mode <- function(n = 500, p = .1) {
   if (identical(n, FALSE)) {
     options(warcraft_mode = FALSE)
-    invisible(removeTaskCallback("warcraft_"))
-    message("leaving warcraft mode...")
+    invisible(removeTaskCallback("warcraftmode"))
+    warcraft_("last")
   } else if (isTRUE(getOption("warcraft_mode"))) {
-    invisible(removeTaskCallback("warcraft_"))
-    invisible(addTaskCallback(wc3(n, p), name = "warcraft_"))
+    invisible(removeTaskCallback("warcraftmode"))
+    invisible(addTaskCallback(wc3(n, p), name = "warcraftmode"))
   } else {
-    invisible(addTaskCallback(wc3(n, p), name = "warcraft_"))
+    options(warcraft_mode = TRUE)
+    invisible(addTaskCallback(wc3(n, p), name = "warcraftmode"))
   }
   invisible()
 }
@@ -44,32 +45,58 @@ warcraft_mode <- function(n = 500, p = .1) {
 #' @rdname warcraft_mode
 warcraft <- function(n = 500, p = .1) warcraft_mode(n, p)
 
-
-WARCRAFT_DIR <- function(home) {
-  x <- Sys.getenv("WARCRAFT_DIR")
-  if (identical(x, "")) {
-    save_dir2renv(home)
-    x <- Sys.getenv("WARCRAFT_DIR")
-    if (identical(x, "")) {
-      stop("save_dir2renv() didn't work", call. = FALSE)
-    }
+warcraft_dir <- function() {
+  wardir <- Sys.getenv("WARCRAFT_DIR")
+  if (identical(wardir, "")) {
+    wardir <- file.path(home(), ".warcraft")
+    set_renv("WARCRAFT_DIR" = wardir)
   }
-  x
+  wardir
 }
 
-setup_warcraft <- function(home = normalizePath("~/")) {
-  wardir <- WARCRAFT_DIR(home)
-  stopifnot(dir.exists(wardir))
-  x <- list.files(wardir, all.files = TRUE)
-  if (any(!wc_sounds$path %in% x)) {
-    kp <- !wc_sounds$path %in% x
+
+
+.Renviron <- function() {
+  if (file.exists(".Renviron")) {
+    ".Renviron"
+  } else if (!identical(Sys.getenv("HOME"), "")) {
+    file.path(Sys.getenv("HOME"), ".Renviron")
+  } else {
+    file.path(normalizePath("~"), ".Renviron")
+  }
+}
+
+home <- function() {
+  if (!identical(Sys.getenv("HOME"), "")) {
+    file.path(Sys.getenv("HOME"))
+  } else {
+    file.path(normalizePath("~"))
+  }
+}
+
+setup_warcraft_dir <- function() {
+  if (exists(".w")) {
+    return(get("wavs", envir = get(".w")))
+  }
+  wardir <- warcraft_dir()
+  if (!dir.exists(wardir)) {
+    dir.create(wardir)
+  }
+  wavs <- list.files(wardir, all.files = TRUE)
+  if (any(!wc_sounds$path %in% wavs)) {
+    kp <- !wc_sounds$path %in% wavs
     sh <- Map(
       "download.file",
-      wc_sounds$url[kp],
-      file.path(wardir, wc_sounds$path[kp])
+      wc_sounds$url[!wc_sounds$path %in% wavs],
+      file.path(wardir, wc_sounds$path[!wc_sounds$path %in% wavs])
     )
   }
-  invisible()
+  wavs <- list.files(
+    warcraft_dir(), pattern = "\\.mp3$|\\.wav$",
+    full.names = TRUE, all.files = TRUE
+  )
+  .w <- new.env()
+  assign("wavs", wavs, envir = .w)
 }
 
 wc3 <- function(total, p) {
@@ -78,64 +105,50 @@ wc3 <- function(total, p) {
   function(expr, value, ok, visible) {
     ## add to counter
     ..ctr.. <<- ..ctr.. + 1L
-    ## warcraft mode
-    warcraft_(p)
-    active <- (..ctr.. < total)
+    active <- (..ctr.. <= total)
     if (!active) {
+      warcraft_("last")
       options(warcraft_mode = FALSE)
-      message("warcraft mode expired")
+      message("Warcraft mode has expired.")
+    } else if (..ctr.. == 1L) {
+      options(warcraft_mode = TRUE)
+      message("Entering Warcraft mode...")
+      warcraft_("first")
+    } else if (runif(1) > (1 - p)) {
+      ## warcraft mode
+      warcraft_("mid")
     }
     ## return
     active
   }
 }
 
-
-warcraft_ <- function(p) {
-  wardir <- WARCRAFT_DIR()
-  mp3s <- list.files(
-    wardir, "\\.warcraft", all.files = TRUE, full.names = TRUE)
-  if (length(mp3s) == 0) {
-    stop("sorry, you'll need to download the warcraft audio files",
-         call. = FALSE)
-  }
-  mp3 <- sample(mp3s, 1)
-  if (isTRUE(getOption("warcraft_mode"))) {
-    if (runif(1) < p) {
-      if (.Platform$OS.type == "windows") {
-        player <- "c:/Program Files/Windows Media Player/wmplayer.exe"
-        if (!file.exists(player)) {
-          player <- "mplay32 /play /close"
-        } else {
-          player <- shQuote(player)
-        }
-        sh <- shell(paste0('"', paste(player, shQuote(mp3)), '"'), intern = TRUE)
-      } else if (file.exists("/usr/bin/afplay")) {
-        player <- "afplay"
-        sh <- system(paste(player, mp3, "&"), intern = TRUE)
-      } else {
-        player <- "play"
-        sh <- system(paste(player, mp3, "&"), intern = TRUE)
-      }
-    }
+warcraft_ <- function(which = "mid") {
+  wavs <- setup_warcraft_dir()
+  if (which == "first") {
+    wav <- grep("\\.ready", wavs, value = TRUE)
+  } else if (which == "last") {
+    wav <- grep("\\.jobsdone", wavs, value = TRUE)
   } else {
-    message("Entering warcraft mode...")
-    options(warcraft_mode = TRUE)
-    if (.Platform$OS.type == "windows") {
-      player <- "c:/Program Files/Windows Media Player/wmplayer.exe"
-      if (!file.exists(player)) {
-        player <- "mplay32 /play /close"
-      } else {
-        player <- shQuote(player)
-      }
-      sh <- shell(paste0('"', paste(player, shQuote(mp3)), '"'), intern = TRUE)
-    } else if (file.exists("/usr/bin/afplay")) {
-      player <- "afplay"
-      sh <- system(paste(player, mp3, "&"), intern = TRUE)
-    } else {
-      player <- "play"
-      sh <- system(paste(player, mp3, "&"), intern = TRUE)
-    }
+    wav <- sample(
+      grep("\\.ready|\\.jobsdone", wavs, value = TRUE, invert = TRUE),
+      1L
+    )
   }
-  TRUE
+  if (.Platform$OS.type == "windows") {
+    player <- "c:/Program Files/Windows Media Player/wmplayer.exe"
+    if (!file.exists(player)) {
+      player <- "mplay32 /play /close"
+    } else {
+      player <- shQuote(player)
+    }
+    sh <- shell(paste0('"', paste(player, shQuote(wav)), '"'), intern = TRUE)
+  } else if (file.exists("/usr/bin/afplay")) {
+    player <- "afplay"
+    sh <- system(paste(player, wav, "&"), intern = TRUE)
+  } else {
+    player <- "play"
+    sh <- system(paste(player, wav, "&"), intern = TRUE)
+  }
+  invisible()
 }

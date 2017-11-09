@@ -1,60 +1,44 @@
+is_named <- function(x) UseMethod("is_named")
+is_named.default <- function(x) !is.null(names(x))
 
-save_dir2renv <- function(home) {
-  ## create dir and .Renviron paths
-  dir <- file.path(home, ".warcraft")
-  renv <- file.path(home, ".Renviron")
-  ## check whether dir exists and create if not
-  if (!dir.exists(dir)) {
-    dir.create(dir)
-  }
-  ## check .Renviron
-  check_renv(renv)
-  ## set dir path as R environment variable
-  set_renv(`WARCRAFT_DIR` = dir, path = renv)
-}
+are_named <- function(x) UseMethod("are_named")
+are_named.default <- function(x) is_named(x) & "" %nin% names(x)
 
-check_renv <- function(path) {
-  if (!file.exists(path)) {
-    return(invisible())
-  }
-  con <- file(path)
-  x <- readLines(con, warn = FALSE)
+
+readlines <- function(x, ...) {
+  con <- file(x)
+  x <- readLines(con, warn = FALSE, ...)
   close(con)
-  x <- clean_renv(x)
-  x <- paste(x, collapse = "\n")
-  cat(x, file = path, fill = TRUE)
-  invisible()
-}
-
-clean_renv <- function(x) {
-  stopifnot(is.character(x))
-  ## remove incomplete vars
-  x <- grep("=$", x, value = TRUE, invert = TRUE)
-  ## split lines with double entries and fix into new vars
-  xs <- strsplit(x, "=")
-  vals <- sub("[^=]*=", "", x)
-  kp <- !grepl("[[:upper:]]{1,}=", vals)
-  if (sum(!kp) > 0L) {
-    m <- regexpr("[[:upper:]_]{1,}(?==)", x[!kp], perl = TRUE)
-    newlines <- paste0(regmatches(x[!kp], m), "=", sub(".*=", "", x[!kp]))
-    x <- x[kp]
-    x[(length(x) + 1):(length(x) + length(newlines))] <- newlines
-  }
-  ## remove double entries
-  xs <- strsplit(x, "=")
-  kp <- !duplicated(sapply(xs, "[[", 1))
-  x <- x[kp]
   x
 }
 
-set_renv <- function(..., path) {
+writelines <- function(x, file, ...) {
+  con <- file(file)
+  writeLines(x, con, ...)
+  close(con)
+}
+
+check_renv <- function() {
+  x <- readlines(.Renviron())
+  ## split lines with double entries and fix into new vars
+  x <- strsplit(x, "(?!<\\=)\\=", perl = TRUE)
+  x <- x[lengths(x) == 2L]
+  x <- tibble::as_tibble(data.frame(
+    matrix(unlist(x), ncol = 2L, byrow = TRUE),
+    stringsAsFactors = FALSE
+  ), validate = FALSE)
+  names(x) <- c("variable", "value")
+  x <- x[!duplicated(x$variable, fromLast = TRUE), ]
+  x <- paste0(x$variable, "=", x$value)
+  suppressMessages(writelines(x, .Renviron()))
+}
+
+set_renv <- function(...) {
   dots <- list(...)
-  nms <- names(dots)
-  stopifnot(length(nms) > 0L)
-  stopifnot(length(dots) == length(nms))
-  x <- paste0(nms, "=", dots)
+  stopifnot(are_named(dots))
+  x <- paste0(names(dots), "=", dots)
   x <- paste(x, collapse = "\n")
-  check_renv(path)
-  cat(x, file = path, fill = TRUE, append = TRUE)
-  readRenviron(path)
+  check_renv()
+  cat(x, file = .Renviron(), fill = TRUE, append = TRUE)
+  readRenviron(.Renviron())
 }
