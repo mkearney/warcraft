@@ -1,6 +1,8 @@
+.Rproj.user
 .Rapp.history
 .Rhistory
 R/.*
 .build*
 #*
 .#*
+.DS_Store

@@ -1,2 +1,5 @@
+^README\.Rmd$
+^warcraft\.Rproj$
+^\.Rproj\.user$
 ^\.make.*
 ^make$
