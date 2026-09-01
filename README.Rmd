@@ -21,8 +21,13 @@ An R package you truly *need*.
 
 ## description
 
-Plays audio from warcraft upon completion of every few R tasks. Only
-works on Mac's and linux-based machines.
+Plays audio from warcraft while you work. It is a joke, but a useful one:
+tasks that cost real CPU time get a **"job's done"**, tasks that fail get an
+**annoyed orc**, and everything else is random peon chatter. So the noise
+actually tells you something.
+
+Requires `afplay` (macOS) or one of `play` (sox), `paplay`, or `aplay`
+(linux).
 
 ## install
 
@@ -39,28 +44,81 @@ devtools::install_github("mkearney/warcraft")
 ```
 
 ## warcraft mode
-Setup (installation of audio files and setting of R environment
-variables) now happens at the time of installation/package load. Just
-load the package to enter warcraft mode.
+
+Audio files are downloaded once, on first load, into `~/.warcraft`.
 
 ```{r}
 library(warcraft)
+
+## enter warcraft mode
+warcraft_mode()
 ```
 
-Or, crank it up to 11 by setting the max number of plays to `Inf`
-(warcraft mode will last your entire R session) and the probability of
-audio plays to 1.0 (audio will play during every top-level task)/
+By default you get a random clip on roughly one task in ten, a "job's done"
+for any task costing 5+ seconds of CPU time, and an error clip whenever a
+task fails.
+
+Tune it:
 
 ```{r}
+## quiet assistant: say nothing unless a task took 30+ seconds or blew up
+warcraft_mode(Inf, p = 0, min_time = 30)
+
 ## max duration and frequency of audio plays
-warcraft_mode(Inf, 1.0)
+warcraft_mode(Inf, p = 1.0)
+
+## no error sounds, purely random
+warcraft_mode(errors = FALSE, min_time = Inf)
 ```
 
 ## leave warcraft mode
+
 To leave warcraft mode, simply enter `FALSE` into the warcraft mode
 function.
 
 ```{r}
 ## leave warcraft mode
 warcraft_mode(FALSE)
+
+## or just silence it for a while
+warcraft_mute()
+warcraft_mute(FALSE)
+```
+
+## one-off announcements
+
+`warcraft_when_done()` times an expression exactly and announces the result,
+whether or not warcraft mode is on. It works in scripts too.
+
+```{r}
+fit <- warcraft_when_done(lm(mpg ~ ., mtcars))
+
+## only speak up if the block ran longer than a minute
+warcraft_when_done({
+  download_everything()
+  fit_the_big_model()
+}, min_time = 60)
+```
+
+Or play something yourself:
+
+```{r}
+warcraft_play("done")
+warcraft_play("workwork")
+```
+
+## what's going on
+
+```{r}
+warcraft_status()
+#> warcraft mode : ON
+#> sounds        : 21/21 cached in /Users/mwk/.warcraft
+#> player        : found
+#> muted         : FALSE
+#> plays left    : 497
+#> probability   : 0.1
+#> min_time      : 5 CPU seconds
+#> error sounds  : TRUE
+
+warcraft_sounds()
 ```

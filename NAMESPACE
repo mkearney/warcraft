@@ -2,3 +2,8 @@
 
 export(warcraft)
 export(warcraft_mode)
+export(warcraft_mute)
+export(warcraft_play)
+export(warcraft_sounds)
+export(warcraft_status)
+export(warcraft_when_done)

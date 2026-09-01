@@ -1,16 +1,21 @@
 Package: warcraft
 Type: Package
 Title: warcraft mode
-Version: 0.0.35
-Date: 2017-11-08
+Version: 0.1.0
+Date: 2026-09-01
 Authors@R: person("Michael W.", "Kearney", "", "mkearney@ku.edu", c("aut", "cre"))
-Description: A simple package that cycles through audio files from the game
-    warcraft 3. Allows custom duration and will play for roughly one of twenty
-    top level tasks performed.
+Description: Plays audio from the game warcraft while you work. Tasks that
+    cost real CPU time get a "job's done", tasks that fail get an annoyed
+    orc, and the rest is random peon chatter. Also provides on-demand
+    playback for announcing the end of long-running jobs.
 Depends:
     R (>= 3.1.0)
+Imports:
+    stats,
+    utils
 License: MIT + file LICENSE
+Encoding: UTF-8
 LazyData: TRUE
 URL: https://github.com/mkearney/warcraft
 BugReports: https://github.com/mkearney/warcraft/issues
-RoxygenNote: 6.0.1
+Config/roxygen2/version: 8.1.0
