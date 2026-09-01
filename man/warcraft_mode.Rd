@@ -5,24 +5,32 @@
 \alias{warcraft}
 \title{Enter Warcraft Mode}
 \usage{
-warcraft_mode(n = 500, p = 0.1)
+warcraft_mode(n = 500, p = 0.1, min_time = 5, errors = TRUE)
 
-warcraft(n = 500, p = 0.1)
+warcraft(n = 500, p = 0.1, min_time = 5, errors = TRUE)
 }
 \arguments{
-\item{n}{Maximum number of times to call warcraft audio before
-warcraft mode expires. Defaults to 500. To disable warcraft mode,
-set this value to FALSE.}
+\item{n}{Maximum number of top-level tasks before warcraft mode expires.
+Defaults to 500. Use \code{Inf} to last the whole session, or
+\code{FALSE} to leave warcraft mode.}
 
-\item{p}{Desired proportion of top-level tasks that should trigger
-the playing of audio files. Defaults to play audio during roughly
-1 out of 10 top level tasks.}
+\item{p}{Probability that an ordinary top-level task triggers a random
+clip. Defaults to \code{0.1}, or roughly one task in ten.}
+
+\item{min_time}{Tasks costing at least this many seconds of CPU time
+always get a "job's done", regardless of \code{p}. Defaults to 5. Set
+to \code{Inf} to switch this off and go back to purely random playback.}
+
+\item{errors}{If \code{TRUE} (the default) a failed top-level task always
+plays an error clip. Requires R 4.0.0 or later.}
 }
 \value{
-Invisibly enters warcraft_mode (getOption("warcraft_mode"))
+Invisibly returns the warcraft mode settings.
 }
 \description{
-Enter Warcraft Mode
+Plays audio from Warcraft as you work. Expensive tasks get a "job's
+done", failed tasks get an annoyed orc, and the rest is random peon
+chatter.
 }
 \examples{
 \dontrun{
@@ -32,11 +40,17 @@ library(warcraft)
 ## enter warcraft mode
 warcraft_mode()
 
-## disable warcraft mode
-warcraft_mode(FALSE)
+## only speak up for tasks that took real work (30+ CPU seconds)
+warcraft_mode(Inf, p = 0, min_time = 30)
 
 ## play lots of warcraft sounds for entire R session
 warcraft_mode(Inf, 1.0)
 
+## disable warcraft mode
+warcraft_mode(FALSE)
 }
+}
+\seealso{
+\code{\link{warcraft_play}}, \code{\link{warcraft_when_done}},
+  \code{\link{warcraft_status}}
 }

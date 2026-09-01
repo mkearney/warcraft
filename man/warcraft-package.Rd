@@ -2,14 +2,22 @@
 % Please edit documentation in R/warcraft.r
 \docType{package}
 \name{warcraft-package}
-\alias{warcraft}
 \alias{warcraft-package}
 \title{warcraft: Turn on Warcraft Mode in your R environment}
 \description{
-Playing audio files from the classic computer game during
-random top-level R tasks. Sorry, only works for Macs/linux
-based operating systems.
+Plays audio from the classic computer game while you work: a "job's
+done" when a task took real effort, an annoyed orc when it failed, and
+random peon chatter the rest of the time. Requires \code{afplay}
+(macOS) or one of \code{play}, \code{paplay}, or \code{aplay} (linux).
 }
+\section{Options}{
+
+\describe{
+  \item{\code{warcraft.mute}}{Set to \code{TRUE} to silence every clip.}
+  \item{\code{warcraft.volume}}{Playback volume, where \code{1} is normal.}
+}
+}
+
 \seealso{
 Useful links:
 \itemize{
@@ -20,5 +28,10 @@ Useful links:
 }
 \author{
 \strong{Maintainer}: Michael W. Kearney \email{mkearney@ku.edu}
+
+Authors:
+\itemize{
+  \item Michael W. Kearney \email{mkearney@ku.edu}
+}
 
 }
