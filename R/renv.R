@@ -1,8 +1,4 @@
-is_named <- function(x) UseMethod("is_named")
-is_named.default <- function(x) !is.null(names(x))
-
-are_named <- function(x) UseMethod("are_named")
-are_named.default <- function(x) is_named(x) & !"" %in% names(x)
+are_named <- function(x) !is.null(names(x)) && !"" %in% names(x)
 
 
 readlines <- function(x, ...) {
