@@ -23,10 +23,10 @@ check_renv <- function() {
   ## split lines with double entries and fix into new vars
   x <- strsplit(x, "(?!<\\=)\\=", perl = TRUE)
   x <- x[lengths(x) == 2L]
-  x <- tibble::as_tibble(data.frame(
+  x <- data.frame(
     matrix(unlist(x), ncol = 2L, byrow = TRUE),
     stringsAsFactors = FALSE
-  ), validate = FALSE)
+  )
   names(x) <- c("variable", "value")
   x <- x[!duplicated(x$variable, fromLast = TRUE), ]
   x <- paste0(x$variable, "=", x$value)
